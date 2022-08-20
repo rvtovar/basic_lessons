@@ -221,25 +221,100 @@ import re
 
 # Case sensitivity
 
-robocop = re.compile(r'robocop', re.I)
+# robocop = re.compile(r'robocop', re.I)
 
-print(robocop.search('RoboCop'))
+# print(robocop.search('RoboCop'))
 
-nameRegex = re.compile(r"Agent (\w)\w*")
+# nameRegex = re.compile(r"Agent (\w)\w*")
 
-print(nameRegex.sub('CENSORED',
-      'Agent Alice told Agent Carol that Agent Eve knows Agent Bob was a double agent'))
-
-
-print(nameRegex.sub(r'\1****',
-      'Agent Alice told Agent Carol that Agent Eve knows Agent Bob was a double agent'))
+# print(nameRegex.sub('CENSORED',
+#       'Agent Alice told Agent Carol that Agent Eve knows Agent Bob was a double agent'))
 
 
-phoneRegex = re.compile(r'''(
-    \d{3}|\(\d{3}\))?
-    (\s|-|\.)
-    \d{3}
-    (\s|-|\.)
-    \d{4}
-    (\s*(ext|x|ext.)\s*\d{2,5})?
-''', re.VERBOSE)
+# print(nameRegex.sub(r'\1****',
+#       'Agent Alice told Agent Carol that Agent Eve knows Agent Bob was a double agent'))
+
+
+# phoneRegex = re.compile(r'''(
+#     \d{3}|\(\d{3}\))? # Finds first 3 numbers
+#     (\s|-|\.) # looks for space - or .
+#     \d{3}
+#     (\s|-|\.)
+#     \d{4}
+#     (\s*(ext|x|ext.)\s*\d{2,5})?
+# ''', re.VERBOSE | re.IGNORECASE | re.DOTALL)
+
+# print(phoneRegex.search('(900) 900-9999'))
+
+
+# emailRegex = re.compile(r'''
+#       [a-zA-Z0-9!._%+-?]+    #username
+#       @                      # @ symbol
+#       [a-zA-Z0-9.-]+         # domain name
+#       (\.[a-zA-Z]{2,4})      # dot-something
+# ''', re.VERBOSE)
+
+# print(emailRegex.search('mail@mail.com').group())
+
+
+num = re.compile(r"(\d\d\d)-(\d\d\d)-(\d\d\d\d)")
+num2 = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')
+
+print(num.findall('901-222-2222 and 901-222-2234'))
+print(num2.findall('901-222-2222 and 901-222-2234'))
+
+
+"""
+      \d \w and \s
+      \D \W \S
+
+      .* and .*?
+
+      create a character class to match all numbers and lowercase letters
+      [a-z0-9]
+
+
+"""
+
+numRegex = re.compile(r"\d+")
+print(numRegex.sub("X", "12 Drummers, 11 Pipers, 5 rings, 3 hens"))
+
+
+"""
+42
+1,234
+6,368,745
+
+not 12,34,567
+1234
+"""
+
+numRegex = re.compile(r"^\d{1,3}(,\d{3})*$")
+
+
+"""
+      Haruto Watanabe
+      Alice Watanabe
+      RoboCop Watanabe
+
+
+      not 
+      haruto Watanabe
+      Mr. Watanabe
+      "Watanabe
+      Haruto watanabe
+"""
+
+nameRegex = re.compile(r"[A-Z][a-z]*\sWatanabe")
+
+"""
+ first word should always be Alice, Bob, Carol
+ second word should always be eats pets or throws
+ thrid word should be apples, cats, or baseballs
+ .
+
+ and be case insenitive
+"""
+
+sentRegex = re.compile(
+    r"(Alice|Bob|Carol\s(eats|pets|throws)\s(apples|cats|baseballs)", re.I)
